@@ -6,8 +6,8 @@ function [dVdt] = left_ventricle(t,V)
     %Hence, a set of equations are defined, which aid in calculating the
     %time-differential of volume in the compartment.
     
-%     V = double(V);
-%     t = double(t);
+%   V = double(V);
+%   t = double(t);
 
     %End systolic elastance
     Ees = double(100e6); %N/m^5
