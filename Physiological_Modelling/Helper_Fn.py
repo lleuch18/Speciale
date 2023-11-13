@@ -8,6 +8,9 @@ Created on Thu Oct  5 12:41:19 2023
 # %% Difference Checker
 from difflib import Differ
 
+
+
+
 def difference_checker(file1: str, file2: str, output_file: str) -> None:
     """ Checks difference in content between 2 codefiles. 
     Appends output to .txt.
@@ -36,5 +39,9 @@ def difference_checker(file1: str, file2: str, output_file: str) -> None:
         with open(output_file,"a") as f:
             for line in differ.compare(file_1.readlines(), file_2.readlines()):
                 print(line,file=f)
+                
+                
+                
+
 
 
