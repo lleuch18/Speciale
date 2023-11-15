@@ -28,21 +28,25 @@ q1=GetFt('Valve','q',{'LvSyArt','LaLv','PuVenLa',...
 p1(:,[3,4])=p1(:,[3,4])+OFFSET;% pressures
 V1(:,[3,4])=V1(:,[3,4])+OFFSET;% volumes
 q1(:,[4:6])=q1(:,[4:6])+OFFSET;% flows
-subplot(2,4,[3,4,7,8]); plot(t,[p1,V1,q1]);
+%subplot(2,4,[3,4,7,8]); 
+plot(t,[p1,V1,q1]);
 title(['Units: ',num2str(qSc*1e6),' ml/s; ',num2str(pSc/1e3),' kPa; ',...
     num2str(VSc*1e6),' ml']);
 
+figure(2)
 % p-V loops
 Calp= 0.001; CalV= 1e6;
 VT= CalV*GetFt('Cavity','V',{'La','Ra','Lv','Rv'});
 pT= Calp*GetFt('Cavity','p',{'La','Ra','Lv','Rv'});
-subplot(2,4,1); plot(VT,pT);
+%subplot(2,4,1); 
+plot(VT,pT);
 title('p(V)')
 
+figure(3)
 %Sf-Ef loops
 EfT = GetFt('Patch','Ef','All');
 SfT = GetFt('Patch','Sf','All')/1e3;
-subplot(2,4,2); plot(EfT,SfT);
+subplot(2,1,1); plot(EfT,SfT);
 title('stress[kPa](strain)')
 
 % clipped low venous, atrial and ventricular pressures
@@ -51,11 +55,12 @@ A= [GetFt('Cavity','p',{'La','Ra','Lv','Rv'}),...
     GetFt('Node'  ,'p',{'PuVen','SyVen'    })]/pSc;
 Maxy=1.05*max(max(A(:,[1,2])));
 Miny=min(A(:));
-subplot(2,4,5:6); plot(t,A);
+subplot(2,1,2);
+plot(t,A);
 axis([t(1),t(end),Miny,Maxy]);
 title('p(t)')
 
-figure(1);
+%figure(1);
 end
 
 %========== AUXILARY FUNCTIONS =============

@@ -1,0 +1,511 @@
+"""
+Components for easy input/output of the CircAdapt model.
+
+The component is a general class. It holds parameters that will be called
+using the Parameter object and signals that are called using the Signals
+object.
+"""
+
+import numpy as np
+from circadapt.settings import __version__
+
+class Component:
+    """
+    General functions to communicate with c++ objects.
+
+    Parameters
+    ----------
+    model: ctypes object
+        C++ model
+    locs: string
+        Locations of objects in the c++ model that can be altered along this
+        component
+    """
+
+    parameters = []
+    signals = []
+
+    parameter_on_set = {}
+
+    def __init__(self, model, objects=None):
+        self._model = model
+        self.objects = [] if objects is None else objects
+        self.build()
+
+    def build(self):
+        self.objects_short = np.array([
+            o.split('.')[-1] for o in self.objects
+            ])
+
+    def add_object(self, o):
+        self.objects.append(o)
+        self.build()
+
+    def __repr__(self):
+        """Object representation in string format."""
+        return '<' + str(self.__class__.__name__) + '> \n' + \
+            'parameters: \n ' + self.parameters.__repr__() + \
+            '\n\n signals: \n ' + self.signals.__repr__() + \
+            '\n\n objects: \n ' + self.objects.__repr__() + \
+            '\n<\\' + str(self.__class__.__name__) + '>'
+
+    def __getitem__(self, arg: any) -> any:
+        """
+        Get data.
+
+        This function is called when self[arg].
+
+        Parameters
+        ----------
+        arg: slice or string
+            If slice, return a components object with locs obtained from slice.
+            If str, return the parameter or signal for all locs
+        """
+        if isinstance(arg, slice) or \
+                isinstance(arg, int):
+            return self.__class__(
+                self._model,
+                objects=self.objects[arg],
+                )
+        if arg in self.parameters:
+            return Parameter(
+                self._model,
+                arg,
+                self.objects,
+                self.parameter_on_set.get(arg, None),
+                )
+        if arg in self.signals:
+            return Signal(self._model, arg, self.objects)
+        raise ValueError('Argument unknown')
+
+    def __setitem__(self, arg: str, val: any) -> any:
+        """
+        Set data.
+
+        Set data of the parameter given in arg. Only parameter names can be
+        used.
+
+        Parameters
+        ----------
+        arg: str
+            Parameter name
+        val: float/int/bool
+            Value will automatically be translated to type to
+        """
+        if arg in self.parameters:
+            par = Parameter(self._model, arg, self.objects)
+            par[:] = val
+
+            # trigger function
+            if arg in self.parameter_on_set:
+                self.parameter_on_set[arg](self._model)
+            return
+        if arg in self.signals:
+            raise ValueError('Can not set signal')
+        raise ValueError('Unknown error')
+
+    def __iter__(self):
+        """Iterate over object, used for dict(self)."""
+        yield 'objects', self.objects
+        for key in self.parameters + self.signals:
+            value = self.__getitem__(key)._get()
+            yield key, value
+
+
+class ParSig:
+    """Basic functions used for Parameter and Signal classes."""
+    def __init__(self, model, par, locs):
+        self._model = model
+        self._par = par
+        self.objects = locs
+
+        # Store number of run commmands of circadapt model.
+        # If is changed, values do not belong to model anymore and set function
+        # must be disabled.
+        self._model_i_run = model._count_run_commands
+
+        self.build()
+
+    def build(self):
+        self.objects_short = np.array([
+            o.split('.')[-1] for o in self.objects
+            ])
+        self._values = self._get()
+
+    def __repr__(self):
+        """Object representation in string format."""
+        return self._values.__repr__()
+
+    def __add__(self, val):
+        """Handle the + operator."""
+        if isinstance(val, Signal):
+            val = val[:]
+        return self._values + val
+
+    def __radd__(self, val):
+        """Handle the + operator as right hand element."""
+        return val + self._values
+
+    def __sub__(self, val):
+        """Handle the - operator."""
+        if isinstance(val, Signal):
+            val = val[:]
+        return self._values - val
+
+    def __rsub__(self, val):
+        """Handle the - operator as right hand element."""
+        return val - self._values
+
+    def __mul__(self, val):
+        """Handle the * operator."""
+        if isinstance(val, Signal):
+            val = val[:]
+        return self._values * val
+
+    def __rmul__(self, val):
+        """Handle the * operator as right hand element."""
+        return val * self._values
+
+    def __truediv__(self, val):
+        """Handle the / operator."""
+        return self._values / val
+
+    def __rtruediv__(self, val):
+        """Handle the / operator as right hand element."""
+        return val / self._values
+
+    def __floordiv__(self, val):
+        """Handle the // operator."""
+        return self._values // val
+
+    def __rfloordiv__(self, val):
+        """Handle the // operator."""
+        return val // self._values
+
+    def __mod__(self, val):
+        """Handle the % operator."""
+        return self._values % val
+
+    def __rmod__(self, val):
+        """Handle the % operator."""
+        return val % self._values
+
+    def __pow__(self, val):
+        """Handle the ** operator."""
+        return self._values ** val
+
+    def __rpow__(self, val):
+        """Handle the ** operator as right hand element."""
+        return val ** self._values
+
+    def __neg__(self):
+        """Handle -self."""
+        return -self._values
+
+    def __lt__(self, val):
+        """Handle the < operator."""
+        return self._values < np.array(val)
+
+    def __le__(self, val):
+        """Handle the <= operator."""
+        return self._values <= np.array(val)
+
+    def __gt__(self, val):
+        """Handle the > operator."""
+        return self._values > np.array(val)
+
+    def __ge__(self, val):
+        """Handle the >= operator."""
+        return self._values >= np.array(val)
+
+    def __eq__(self, val):
+        """Handle the == operator."""
+        return self._values == np.array(val)
+
+    def __ne__(self, val):
+        """Handle the != operator."""
+        return self._values != np.array(val)
+
+    def __getitem__(self, arg: any) -> any:
+        """
+        Get data.
+
+        This function is called when self[arg].
+        """
+        if isinstance(arg, slice) or isinstance(arg, int) or \
+                isinstance(arg, np.ndarray):
+            return self._values[arg]
+        raise ValueError('Unknown key ', arg)
+
+
+class Parameter(ParSig):
+    """
+    General functions to retreive signals from the c++ object.
+
+    Parameters
+    ----------
+    model: ctypes object
+        C++ model
+    par: str
+        Parameter name that will be obtained from each loc.
+    locs: string
+        Locations of objects in the c++ model that can be altered along this
+        component.
+    """
+
+    def __init__(self, model, par, locs, parameter_on_set=None):
+        self.parameter_on_set = parameter_on_set
+        self.shape = len(locs),
+
+        super().__init__(model, par, locs)
+
+    def _get(self, arg=slice(None, None, None)):
+        """
+        Get data.
+
+        This function is called when self[arg].
+
+        Parameters
+        ----------
+        arg: slice or string
+            If slice, return a components object with locs obtained from slice.
+            If str, return the parameter or signal for all locs
+        """
+        if isinstance(arg, slice):
+            return np.array([self._model.get(loc+'.'+self._par)
+                             for loc in self.objects[arg]])
+        return self._model.get(self.objects[arg]+'.'+self._par)
+
+    def __len__(self):
+        """Handle len(self)."""
+        return self.shape[0]
+
+    def __setitem__(self, arg, value):
+        """
+        Set data.
+
+        Set data of the parameter for locs given in arg. Only parameter names
+        can be used.
+
+        Parameters
+        ----------
+        arg: slice
+            Locations to be changed.
+        val: float/int/bool
+            Value will automatically be translated to type of the parameter.
+        """
+        if self._model_i_run != self._model._count_run_commands:
+            raise ReferenceError('Parameters stored seperatly can not be '
+                                 'changed.')
+        if not hasattr(value, '__len__') and isinstance(arg, slice):
+            value = np.ones(len(self.objects[arg]))*value
+
+        if isinstance(arg, slice) and (len(self.objects[arg]) != len(value)):
+            raise ValueError('Dimensions do not match.')
+        elif isinstance(arg, slice):
+            for i_loc, loc in enumerate(self.objects[arg]):
+                self._model.set(loc+'.'+self._par, value[i_loc])
+        elif isinstance(arg, list) and isinstance(arg[0], str):
+            value = np.ones(len(arg))*value
+            for i_loc, loc in enumerate(arg):
+                fullloc = self.objects[
+                    np.argwhere(self.objects_short == loc)[0, 0]]
+                self._model.set(fullloc+'.'+self._par, value[i_loc])
+        elif isinstance(arg, np.ndarray) and arg.dtype == 'bool':
+            # if value is scalar, map to same length
+            # if value is array, it needs to have same length as arg
+            set_values = np.ones(np.sum(arg)) * value
+            set_idx = np.argwhere(arg).reshape(-1)
+            for i, j in enumerate(set_idx):
+                fullloc = self.objects[j]
+                self._model.set(fullloc+'.'+self._par, set_values[i])
+        else:
+            self._model.set(self.objects[arg]+'.'+self._par, value)
+
+        if self.parameter_on_set is not None:
+            self.parameter_on_set(self._model)
+
+    def __getitem__(self, arg):
+        if isinstance(arg, str):
+            if np.sum(self.objects_short == arg) == 1:
+                return self._values[self.objects_short == arg][0]
+            if np.any(self.objects_short == arg): # too many
+                raise ValueError('Something went wrong in building the model.')
+            raise ValueError('Object not found. Check the spelling.')
+
+        if isinstance(arg, list) and isinstance(arg[0], str):
+            if np.any(np.min(
+                    self.objects_short != np.array(arg).reshape((-1, 1)),
+                    axis=1)):
+                raise ValueError('Not all ojects are found.')
+            return self._values[
+                np.argmax(self.objects_short == np.array(arg).reshape((-1, 1)),
+                       axis=1)
+                ]
+        return super().__getitem__(arg)
+
+
+class Signal(ParSig):
+    """
+    General functions to retreive signals from the c++ object.
+
+    Parameters
+    ----------
+    model: ctypes object
+        C++ model
+    par: str
+        Parameter name that will be obtained from each loc.
+    locs: string
+        Locations of objects in the c++ model that can be altered along this
+        component
+    """
+
+    def __init__(self, model, par, locs):
+        super().__init__(model, par, locs)
+
+        val0 = self._model.get(locs[0]+'.' + par)
+
+        # shape in line with numpy arrays
+        if hasattr(val0, '__len__'):
+            self.shape = len(val0), len(locs)
+        else:
+            self.shape = len(locs),
+
+        # ndim in line with numpy arrays
+        self.ndim = len(self.shape)
+
+    def __len__(self):
+        """Handle len(self)."""
+        return self.shape[-1]
+
+    def _get(self, arg=slice(None, None, None)):
+        """Get the signal data for all locs."""
+        ret = np.concatenate((
+            [[self._model.get(loc+'.'+self._par)]
+             for loc in self.objects]
+            ), axis=0)[arg].T
+        return ret
+
+    def __setitem__(self, arg: any, value) -> any:
+        """
+        Set data.
+
+        Function is called when use self[arg].
+
+        Raises
+        ------
+        Always raise error, signals can not be changed.
+        """
+        raise ValueError('Can not change signals')
+
+    def __getitem__(self, arg: any) -> any:
+        """
+        Get data.
+
+        This function is called when self[arg].
+
+        Parameters
+        ----------
+        arg: slice or string
+            If slice, return a components object with locs obtained from slice.
+            If str, return the parameter or signal for all locs
+        """
+        if (isinstance(arg, tuple) and
+                isinstance(arg[1], list) and
+                isinstance(arg[1][0], str)):
+            idx_objects = np.argmax(
+                self.objects_short == np.array(arg[1]).reshape((-1, 1)),
+                axis=1,
+                )
+            return self._values[:, idx_objects][arg[0], :]
+        if isinstance(arg, tuple) and isinstance(arg[1], str):
+            idx_obj = self.objects_short == arg[1]
+            if not np.any(idx_obj):
+                raise ValueError('Object not found.')
+
+            value = self._values[arg[0], idx_obj]
+            if np.issubdtype(type(arg[0]), np.integer):
+                return value[0]
+            return value.reshape(-1)
+
+        if isinstance(arg, tuple):
+            return self._values[arg[0], arg[1]]
+        if (isinstance(arg, slice) or
+                isinstance(arg, int)):
+            return self._values[arg]
+        return super().__getitem__(arg)
+
+
+class General(Component):
+    """Component object with no locations."""
+
+    parameters = {
+        't_cycle': 'Model.t_cycle',
+        'p0': 'Model.PFC.p0',
+        'q0': 'Model.PFC.q0',
+        'PFC': 'Model.PFC.isActive',
+        'stableThresh': 'Model.PFC.stableThresh',
+        'software_version_cpp': 'Version',
+        'software_version_python': lambda: __version__,
+        }
+
+    signals = {
+        }
+
+    def __init__(self, model):
+        self._model = model
+
+    def __repr__(self):
+        """Object representation in string format."""
+        return '<' + str(self.__class__.__name__) + '> \n' + \
+            'parameters: \n ' + self.parameters.keys().__repr__() + \
+            '\n\n signals: \n ' + self.signals.keys().__repr__() + \
+            '\n<\\' + str(self.__class__.__name__) + '>'
+
+    def __getitem__(self, arg: any) -> any:
+        """
+        Get data.
+
+        This function is called when self[arg].
+
+        Parameters
+        ----------
+        arg: slice or string
+            If slice, return a components object with locs obtained from slice.
+            If str, return the parameter or signal for all locs
+        """
+        if arg in self.parameters and isinstance(self.parameters[arg], str):
+            return self._model.get(self.parameters[arg])
+        if arg in self.parameters and callable(self.parameters[arg]):
+            return self.parameters[arg]()
+        if arg in self.signals:
+            return self._model.get(self.signals[arg])
+
+        raise ValueError('unknown')
+
+    def __setitem__(self, arg, value):
+        """
+        Set data.
+
+        Set data of the parameter for locs given in arg. Only parameter names
+        can be used.
+
+        Parameters
+        ----------
+        arg: slice
+            Locations to be changed.
+        val: float/int/bool
+            Value will automatically be translated to type of the parameter.
+        """
+        if arg in self.parameters:
+            return self._model.set(self.parameters[arg], value)
+        if arg in self.signals:
+            raise ValueError('Signals can not be altered')
+        raise ValueError('Argument not known')
+
+    def __iter__(self):
+        """Iterate over object, used for dict(self)."""
+        for key in self.parameters | self.signals:
+            value = self.__getitem__(key)
+            yield key, value
+

@@ -163,7 +163,8 @@ class PPV_Model(Model, ModelAdapt):
            606.50514861]
         
         # Valves
-        # ###PRESUMEABLY FAC = FRACTIONAL AREA CHANGE###
+        # ORDER: ['Tricuspidal klap','Polmonal Ventrikel','Mitralventril','Aortaklap']
+        # Factor of regaining pressure in a divergent flow field
         self['Valve2022']['adaptation_A_open_fac'] = [1.  , 1.11, 1.  , 1.  , 1.11, 1.  ]
         # Opening Area
         self['Valve2022']['A_open'] = [0.00050042, 0.00050203, 0.00045228, 0.00051764, 0.00055321,
@@ -173,7 +174,7 @@ class PPV_Model(Model, ModelAdapt):
            2.64705882e-10, 2.64705882e-10]
         # Valve length
         self['Valve2022']['l'] = 0.01626978
-        # blood Vicocity
+        # blood Vsicocity
         self['Valve2022']['rho_b'] = 1050
         # Determines state of papillary muscle activation
         self['Valve2022']['papillary_muscles'] = True

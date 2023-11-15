@@ -1,4 +1,4 @@
-
+close all; clear all;
 % CircAdaptMain
 % Theo Arts, Tammo Delhaas, Joost Lumens
 % Version CircAdapt.I5 May, 2008
