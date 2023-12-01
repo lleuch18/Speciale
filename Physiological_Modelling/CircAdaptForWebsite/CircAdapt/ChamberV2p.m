@@ -22,6 +22,8 @@ Am   = (4*pi)./Cm.^2; % midwall area
 Am0  = P.Wall.Am0(:,iWall); % zero tension midwall area
 DADT = P.Wall.DADT(:,iWall); % wall compliance
 
+%Pit = 1000*0.0980665; %Intrathoracic Pressure, CmH2O to kPa
+
 Am=max(Am,Am0);% buckling with T<0
 
 T    = (Am-Am0)./DADT; % wall tension
@@ -31,7 +33,7 @@ pTrans= 2*Cm.*T; % transmural pressure
 P.Wall.T(:,iWall)     = T; % wall tension
 P.Wall.Cm(:,iWall)    = Cm; % curvature=1/radius
 P.Wall.Am(:,iWall)    = Am; % wall area
-P.Wall.pTrans(:,iWall)= pTrans; % transmural pressure
+P.Wall.pTrans(:,iWall)= pTrans;%+Pit; % transmural pressure
 
  % Cavity impedance properties, needed to make node connection
 Len= 2*Vm.^(1/3); % cavity length

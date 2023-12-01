@@ -1,4 +1,5 @@
 function S= GetFt(Type,Variable,Location)
+%Presumably GetFt = GetFunction
 % function S= Ft(Type,Variable,Location)
 % Type=string, Variable=string, Location=string
 % e.g. Ft('Node','p','SystArt')

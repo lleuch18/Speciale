@@ -14,7 +14,14 @@ close all; clear all;
 clear
 global P;
 
+Num_Beats = 100;
+
+Original = 1;
+
 addpath(pwd);% add current directory to path
+
+
+
 
 if exist('P.mat','file'); % if P.mat file is available
     FileName='P';
@@ -67,7 +74,7 @@ end
 
 % Default initialization
 G=P.General;
-G.DtSimulation=1.5*G.tCycle; % standard duration of simulation
+G.DtSimulation=Num_Beats*G.tCycle; % standard duration of simulation
 
 P.Adapt.FunctionName='Adapt0P'; % No adaptation
 P.Adapt.Fast= 0; % regular beat to beat sequence
@@ -76,6 +83,7 @@ P.Adapt.Fast= 0; % regular beat to beat sequence
 OK=1; NY='NY';
 while OK;
     disp(' ');
+    disp(['[PA]tient                  number: (2-14)']);
     disp(['[P]ressure                  (kPa): ',num2str(G.p0/1e3)]);
     disp(['[F]low                     (ml/s): ',num2str(G.q0*1e6)]);
     disp(['[T]ime of beat               (ms): ',num2str(G.tCycle*1e3)]);
@@ -85,6 +93,11 @@ while OK;
     disp( '<Enter> = Continue');
     c1=input('Choose Letter <Enter>: ','s');
     switch lower(c1);
+        case 'pa'
+            patient=num2str(input('Patient Number: '));
+            pt = load(['..\Data\to Lasse 2023\DataP',patient,'PS.mat']);
+            P.Patient=pt;
+            P.Patient.Name = {'time','ecg1 (mV)','ecg2(mV)','Airway Pressure (cmH2O)','flow (ml/sec)', 'FeCO2 (%)','FeO2 (%)', 'Arterial Pressure (mmHg)'}
         case 'p'
             G.p0=input('Mean Arterial Pressure (kPa): ')*1e3;
         case 'f'
@@ -115,7 +128,12 @@ end
 % === Solves SVar for problem defined in parameter structure 'P'
 G.tEnd=P.t(end)+G.DtSimulation;
 P.General=G;
-CircAdaptP; %generate solution
+
+if Original
+    CircAdaptP; %generate solution
+else
+    Copy_of_CircAdaptP
+end
 
 %=== Saving State Variables and Model Parameters
 save P P; %save compact solution as structure P in file 'P'
@@ -124,4 +142,17 @@ disp('Differential equation has been solved');
 CircDisplayP; % graphical display
 % Structure P has been extended with solution for all variables as a
 % function of time
+%{
+disp('Average Pressures')
+disp(['SyArt: ',num2str(mean(P.Node.p(:,1)))]);
+disp(['SyVen: ',num2str(mean(P.Node.p(:,2)))]);
+disp(['PuArt: ',num2str(mean(P.Node.p(:,3)))]);
+disp(['PuVen: ',num2str(mean(P.Node.p(:,4)))]);
+disp(['La: ',num2str(mean(P.Node.p(:,5)))]);
+disp(['Ra: ',num2str(mean(P.Node.p(:,6)))]);
+disp(['Lv: ',num2str(mean(P.Node.p(:,7)))]);
+disp(['Rv: ',num2str(mean(P.Node.p(:,8)))]);
+%}
+
+
 

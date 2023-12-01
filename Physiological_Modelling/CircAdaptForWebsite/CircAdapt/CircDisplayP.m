@@ -22,18 +22,32 @@ OFFSET= -20;
 %==== Hemodynamics
 figure(1);
 p1=GetFt('Node','p',{'SyArt','Lv','PuArt','Rv'})/pSc;
+p1(:,[3,4])=p1(:,[3,4])+OFFSET;% pressures
+plot(t,p1)
+title(['Pressure(',num2str(pSc/1e3),' kPa)']);
+legend('SyArt','Lv','PuArt','Rv');
+
+
+figure(2);
 V1=GetFt('Cavity','V',{'La','Lv','Ra','Rv'})/VSc;
+V1(:,[3,4])=V1(:,[3,4])+OFFSET;% volumes
+plot(t,V1)
+title(['Volume(',num2str(VSc*1e6),' ml)']);
+legend('La','Lv','Ra','Rv');
+
+
+figure(3);
 q1=GetFt('Valve','q',{'LvSyArt','LaLv','PuVenLa',...
     'RvPuArt','RaRv','SyVenRa','LaRa','LvRv','SyArtPuArt'})/qSc;
-p1(:,[3,4])=p1(:,[3,4])+OFFSET;% pressures
-V1(:,[3,4])=V1(:,[3,4])+OFFSET;% volumes
 q1(:,[4:6])=q1(:,[4:6])+OFFSET;% flows
-%subplot(2,4,[3,4,7,8]); 
-plot(t,[p1,V1,q1]);
-title(['Units: ',num2str(qSc*1e6),' ml/s; ',num2str(pSc/1e3),' kPa; ',...
-    num2str(VSc*1e6),' ml']);
+plot(t,q1)
+title(['Flow(',num2str(qSc*1e6),' ml/s)']);
+legend('LvSyArt','LaLv','PuVenLa',...
+    'RvPuArt','RaRv','SyVenRa','LaRa','LvRv','SyArtPuArt');
 
-figure(2)
+%legend('SyArt','Lv','PuArt','Rv');
+
+figure(4)
 % p-V loops
 Calp= 0.001; CalV= 1e6;
 VT= CalV*GetFt('Cavity','V',{'La','Ra','Lv','Rv'});
@@ -42,7 +56,7 @@ pT= Calp*GetFt('Cavity','p',{'La','Ra','Lv','Rv'});
 plot(VT,pT);
 title('p(V)')
 
-figure(3)
+figure(5)
 %Sf-Ef loops
 EfT = GetFt('Patch','Ef','All');
 SfT = GetFt('Patch','Sf','All')/1e3;

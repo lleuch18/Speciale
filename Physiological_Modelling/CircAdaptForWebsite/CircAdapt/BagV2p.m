@@ -8,13 +8,16 @@ function BagV2p
 
 global P;
 
+
+
 % works for a single Bag
 % pericardium enclosed cardiac wall and cavities
 iCav =[P.TriSeg.iCavity+(0:1),P.Chamber.iCavity]; % enclosed cavities
 iWall=[P.TriSeg.iWall+(0:2),P.Chamber.iWall]; % enclosed walls
 V= sum(P.Cavity.V(:,iCav),2)+sum(P.Wall.VWall(iWall)); % total enclosed volume
 VNorm   = V/P.Bag.VRef; % normalized volume
-P.Wall.pTrans(:,P.Bag.iWall)= P.Bag.pAdapt * VNorm .^ P.Bag.k; 
-
+P.Wall.pTrans(:,P.Bag.iWall)= P.Bag.pAdapt * VNorm .^ P.Bag.k;
 end
+
+
 

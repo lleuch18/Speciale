@@ -44,7 +44,8 @@ Y= 1./P.Cavity.Z; % should be a summation, not needed now
 Yp= P.Cavity.p .* Y; % should be a summation, not needed now
 P.Node.Y(:,iCavNode)=Y; % internal Y conductance of flow source
 P.Node.q(:,iCavNode)= P.Node.q(:,iCavNode)+Yp; % short circuit flow of node
-P.Node.p= P.Node.q./P.Node.Y; % node pressure by solving NodeFlow q=0
+P.Node.p= (P.Node.q./P.Node.Y); % node pressure by solving NodeFlow q=0
+
 
 % flow into all Cavities, connected to nodes
 P.Cavity.VDot= (P.Node.p(:,iCavNode)-P.Cavity.p)./P.Cavity.Z;

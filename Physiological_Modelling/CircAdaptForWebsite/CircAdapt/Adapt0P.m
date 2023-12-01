@@ -30,7 +30,7 @@ for i=1:6
     str= [str,' ',P.Valve.Name{i}];
 end
 disp(['Flow/q0: ',str]);
-disp(num2str([FlowVec(1:6)/P.General.q0],'%11.4f'));
+%disp(num2str([FlowVec(1:6)/P.General.q0],'%11.4f'));
 disp(['Relative FlowError 1000x= ',num2str(round(1000*ErrFlow))]);
 % ---- End flow error calculation
 
