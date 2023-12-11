@@ -1,5 +1,6 @@
 function CircAdaptP
 
+
 global P
 P.SVar=[];
 P2SVar;
@@ -41,11 +42,11 @@ while P.t(end)<P.General.tEnd-Dt;
 
     TimePoints= P.General.tCycle*(0:nDt)/nDt; %Timepoints starts at 0, goes through nDt. Divided by nDt to get evenly spaced timepoints.
     % existing solution
-    disp(' ')
+    disp('')
     disp(['t= ',num2str(P.t(end)),';  Time to go= ',...
         num2str(P.General.tEnd-P.t(end))]); pause(0.01);
     
-    tol=1e-4; %tol= 1e-4 or 1e-5: trade off accuracy and calculation speed
+    tol = 1e-4; %tol= 1e-4 or 1e-5: trade off accuracy and calculation speed
     opt = odeset('RelTol',tol,'AbsTol',tol);
     
     %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%

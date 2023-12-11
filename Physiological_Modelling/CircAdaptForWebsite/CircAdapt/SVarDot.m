@@ -9,7 +9,7 @@ function OutDot=SVarDot(tDummy,SVar,flag)
 %====
 
 global P
-
+disp(['Current time: ', num2str(tDummy)])
 P.SVar= SVar'; % store state variables SVar
 SVar2P; % state variables SVar -> physiologic representation P.xx
 P.tDot=ones(size(P.t)); % time derivative of time = 1

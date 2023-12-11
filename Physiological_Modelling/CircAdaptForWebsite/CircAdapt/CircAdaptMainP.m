@@ -14,7 +14,7 @@ close all; clear all;
 clear
 global P;
 
-Num_Beats = 100;
+Num_Beats = 1;
 
 Original = 1;
 
