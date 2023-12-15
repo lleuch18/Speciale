@@ -19,32 +19,37 @@ flow = 0;
 
 %% System of Equations
 for i = 1:length(t)     
-     
-    Pvent = Pvent_Driver(t(i)); %Pressure delivered by vent at t [cmH2O]
-
-    %Flow is driven by the dP of Pvent-Pmus
-    flow=((Pvent-Pmus)/8); %[L/s] -> [L/min] at plot    
-    
-    % The flow created by the dP
-    dV = (flow*P.resp.dt); 
-    V = V + dV; %
-    
-    dPao = flow*P.resp.dt/(P.resp.Crs*10^-3); %Change in pressure ((L/dt)*dt)/(L/P) =(P/dt)*dt = P
-    Pao = Pao+dPao;
-    
-    
     %% Pmus Activation 
+    % If Pmus reaches PSTrigger threshold, the Pvent is delivered
     if Pmus == P.resp.PSTrigger
         PSTrigger = true;
     else
         PSTrigger = false;
     end
-
+    
+    % Pmus adds dP caused by patient breathing effort
     Pmus = Pmus_Driver(t(i),PSTrigger);
 
     
+    %% Pvent Activation
+    Pvent = Pvent_Driver(t(i)); %Pressure delivered by vent at t [cmH2O]
 
-    Pmus = Pmus+dPpl; % Calculate Ppl
+    %Flow is driven by the dP of Pvent-Pmus
+    flow=((Pvent-Pmus)/8); %[L/s] -> [L/min] at plot    
+    
+    % The flow created by the dP, adds an amount of dV
+    dV = (flow*P.resp.dt); 
+    V = V + dV; %
+    
+    % dV then creates a dPao, through either in- or deflation
+    dPao = dV/(P.resp.Crs*10^-3); %Change in pressure ((L/dt)*dt)/(L/P) =(P/dt)*dt = P
+    Pao = Pao+dPao;
+    
+    %% Ppl
+    %Seperate Ppl section for a cleaner code
+    dPpl = Ppl + Pmus + Pao;
+    Ppl = Ppl+dPpl; % Calculate Ppl
+    
     %% Housekeeping
     Housekeep(i,flow,V,Pvent,Pmus);    
 
