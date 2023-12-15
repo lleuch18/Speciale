@@ -20,6 +20,12 @@ P.resp.Te = 2.5 %Inspiratory time seconds
 P.resp.Trise = P.resp.Ti*0.2; % 20percent of Ti
 P.resp.PSTrigger = -1.5; % Pmus pressuredrop before delivery of PS [cmH2O]
 
+%Pmus settings
+P.resp.PmusTi = 1.5; %Inspiratory time of Pmus [s]
+P.resp.PmusTe = 2.5; %Expiratory time of Pmus [s]
+P.resp.PmusPause = 0.2; %Pause between insp and exp phase [s]
+P.resp.PmusSet = -12; %Pmus target to reach [cmH2O]
+
 %Simulation Parameters
 P.resp.dt = 0.002; %2ms time steps
 P.resp.sim_lgth = 4; %Simulation length in seconds

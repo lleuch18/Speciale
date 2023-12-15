@@ -5,37 +5,49 @@ function Respiratory_Modelfn(Ppl0,start_time,end_time)
 
 global P
 %% Plots
-[Pao_plot,Ppl_plot,flow_plot,V_plot] = plots(1,1,1,1);
+[Pao_plot,Ppl_plot,flow_plot,V_plot,Pvent_plot,Pmus_plot] = plots(1,1,1,1,1,1);
 
 %% Loop Parameters
 t = [start_time:P.resp.dt:end_time]; 
 
 
 %% Initial Values
-Pmus = 0+P.resp.PEEP; %Techically Ppl = -3 at start insp, but we assume the driving pressure creating flow, to be equal to PEEP 
+Ppl = 0+P.resp.PEEP; %Techically Ppl = -3 at start insp, but we assume the driving pressure creating flow, to be equal to PEEP 
 Pao = P.resp.PEEP; %Initial Pao is PEEP [cmH2O]
 V = (P.resp.Crs*P.resp.PEEP)*10^-3; %Initiel Volumen [L]
 flow = 0;
+Pmus = 0;
+dPmus = 0;
 
 PSTrigger = false;
 %% System of Equations
 for i = 1:length(t)     
     %% PSTrigger state
     % PSTrigger controls delivery of Pvent and Pmus activation
-    if Pmus == P.resp.PSTrigger
-        PSTrigger = true;    
+    if Pmus <= P.resp.PSTrigger && PSTrigger == false
+        PSTrigger = true;
+        disp('PMUS TRIGGER SET')
     end
     
     %% Pmus Activation    
     % Pmus adds dP caused by patient breathing effort
     Pmus = Pmus_Driver(t(i),PSTrigger);
 
+    if i > 1 
+    dPmus = Pmus-P.resp.Pmus(i-1);
+    if Pmus < 0
+        disp(['dpmus:', num2str(dPmus)]);
+        disp(['Pmus:', num2str(Pmus)]);
+        disp(['Pmus(i-1)',num2str(P.resp.Pmus(i-1))]);
+    end
+    end
+
     
     %% Pvent Activation
-    Pvent = Pvent_Driver(t(i),PSTrigger); %Pressure delivered by vent at t [cmH2O]
+    Pvent = Pvent_DriverPS(t(i),PSTrigger); %Pressure delivered by vent at t [cmH2O]
 
     %Flow is driven by the dP of Pvent-Pmus
-    flow=((Pvent-Pmus)/8); %[L/s] -> [L/min] at plot    
+    flow=((Pvent-Ppl)/8); %[L/s] -> [L/min] at plot    
     
     % The flow created by the dP, adds an amount of dV
     dV = (flow*P.resp.dt); 
@@ -47,17 +59,17 @@ for i = 1:length(t)
     
     %% Ppl
     %Seperate Ppl section for a cleaner code
-    dPpl = Ppl + Pmus + Pao;
+    dPpl = dPmus + dPao;
     Ppl = Ppl+dPpl; % Calculate Ppl
     
     %% Housekeeping
-    Housekeep(i,flow,V,Pvent,Pmus);    
+    Housekeep(i,flow,V,Pvent,Pmus,Ppl,Pao);    
 
 end
 
 disp('Simulation Done')
 
-if Pao_plot
+if Pvent_plot
 figure(1)
 plot(t,P.resp.Pao)
 title('Pao')
@@ -75,7 +87,7 @@ end
 
 if flow_plot
 figure(3)
-plot(t,P.resp.flow*60);
+plot(t,P.resp.flow);%*60 for debugging purpose
 title('flow')
 ylabel('flow (L/min)')
 xlabel('Time (S)')
@@ -87,8 +99,24 @@ plot(t,P.resp.V)
 title('V')
 ylabel('V (L)')
 xlabel('Time (S)')
-yticks([0,0.5,1,1.5,2,2.5,3,3.5,4])
+%yticks([0,0.5,1,1.5,2,2.5,3,3.5,4])
 %yline((P.resp.CL*P.resp.PEEP)*10^-3)
+end
+
+if Pvent_plot
+figure(5)
+plot(t,P.resp.Pvent)
+title('Pvent')
+ylabel('P (cmH2O)')
+xlabel('Time (S)')
+end
+
+if Pmus_plot
+figure(6)
+plot(t,P.resp.Pmus)
+title('Pmus')
+ylabel('P (cmH2O)')
+xlabel('Time (S)')
 end
 
 

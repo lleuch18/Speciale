@@ -5,7 +5,7 @@ function Respiratory_Modelfn(Ppl0,start_time,end_time)
 
 global P
 %% Plots
-[Pao_plot,Ppl_plot,flow_plot,V_plot] = plots(1,1,1,1);
+[Pao_plot,Ppl_plot,flow_plot,V_plot,Pvent_plot,Pmus_plot] = plots(0,1,1,1,1,0);
 
 %% Loop Parameters
 t = [start_time:P.resp.dt:end_time]; 
@@ -21,7 +21,7 @@ flow = 0;
 for i = 1:length(t)       
     
     
-    Pvent = Pvent_driver(t(i)); %Pressure delivered by vent at t [cmH2O]
+    Pvent = Pvent_DriverPC(t(i)); %Pressure delivered by vent at t [cmH2O]
 
     
     flow=((Pvent-Ppl)/8); %[L/s] -> [L/min] at plot
@@ -39,17 +39,17 @@ for i = 1:length(t)
     cnt = cnt + 1;
 
     %% Housekeeping
-    Housekeep(i,flow,V,Pvent,Ppl);    
+    Housekeep(i,flow,V,Pvent,0,Ppl,0);    
 
 end
 
 disp('Simulation Done')
 
-if Pao_plot
+if Pvent_plot
 figure(1)
-plot(t,P.resp.Pao)
-title('Pao')
-ylabel('Pao (cmH2O)')
+plot(t,P.resp.Pvent)
+title('Pvent')
+ylabel('Pvent (cmH2O)')
 xlabel('Time (S)')
 end
 

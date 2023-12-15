@@ -1,4 +1,4 @@
-function Pvent = Driver_Function(t,PSTrigger)
+function Pvent = Pvent_DriverPC(t,PSTrigger)
 global P
 %ACTIVATION_FUNCTION Function which simulates the delivered pressure from
 %the ventilator
