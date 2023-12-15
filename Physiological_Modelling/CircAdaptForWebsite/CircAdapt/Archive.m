@@ -203,7 +203,7 @@ Pao = R*flow+(1/C)*V+PEEP;
     %Q = Pao-Palv/R
     flow=(Pao-Palv)/R; %Calculate flow at each timestep
     %4. Calculate Palv
-    dPa = (flow*dT)/C; %Change in pressure (L/Timestep)/(L/P) =P/Timestep
+    dPa = (flow*dT)/C; %Change in pressure (L/Timestep)/(L/P) =P/Timestep*TimeStep
     Palv = Palv+dPalv;
     %5. Calculate Volume
     dV = flow*dT %Volume is flow over time

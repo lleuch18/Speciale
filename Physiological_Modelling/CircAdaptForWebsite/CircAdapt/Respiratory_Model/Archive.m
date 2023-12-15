@@ -24,3 +24,22 @@ index = find(P.resp.index_mapping==t); %Find the index which hold the given time
 disp(['Current time: ', num2str(t)])
 disp(['Current Pao: ', num2str(P.resp.Pao(index))])
 disp(['Current Index: ', num2str(index)])
+
+
+%% Flow Conditionals
+ %{
+    if t(i) == 0
+        flow = 0;
+    else    
+    flow=(Pao-Ppl)/P.resp.R; %1. Calculate flow at each timestep 
+    %Normal Resistance 2 to 3 cmH2O/L/sec.
+    end
+
+    %if t(i)>P.resp.Ti && t(i)<= P.resp.Ti+P.resp.Te
+      %  flow = flow*-1;
+    %end
+ %}
+
+%% Initial Ppl
+%Ppl0 = Ppl0+P.resp.PEEP; %Default -3cmH2O + PEEP
+%Ppl = Ppl0; %Set by user

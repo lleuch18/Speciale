@@ -7028,3 +7028,231 @@ Current Pao: 5
 Current Ppl: -163.7898
 Current Pao: 5
 Current Ppl: -163.79
+{Error using <a href="matlab:matlab.internal.language.introspective.errorDocCallback('Respiratory_Modelfn')" style="font-weight:bold">Respiratory_Modelfn</a>
+Too many output arguments.
+
+Error in <a href="matlab:matlab.internal.language.introspective.errorDocCallback('odearguments', 'C:\Program Files\MATLAB\R2023b\toolbox\matlab\funfun\private\odearguments.m', 92)" style="font-weight:bold">odearguments</a> (<a href="matlab: opentoline('C:\Program Files\MATLAB\R2023b\toolbox\matlab\funfun\private\odearguments.m',92,0)">line 92</a>)
+f0 = ode(t0,y0,args{:});   % ODE15I sets args{1} to yp0.
+
+Error in <a href="matlab:matlab.internal.language.introspective.errorDocCallback('ode113', 'C:\Program Files\MATLAB\R2023b\toolbox\matlab\funfun\ode113.m', 113)" style="font-weight:bold">ode113</a> (<a href="matlab: opentoline('C:\Program Files\MATLAB\R2023b\toolbox\matlab\funfun\ode113.m',113,0)">line 113</a>)
+    odearguments(odeIsFuncHandle, odeTreatAsMFile, solver_name, ode, tspan, y0, options, varargin);
+
+Error in <a href="matlab:matlab.internal.language.introspective.errorDocCallback('Test_Script', 'C:\Users\Lasse\OneDrive\Skrivebord\Speciale\Physiological_Modelling\CircAdaptForWebsite\CircAdapt\Respiratory_Model\Test_Script.m', 64)" style="font-weight:bold">Test_Script</a> (<a href="matlab: opentoline('C:\Users\Lasse\OneDrive\Skrivebord\Speciale\Physiological_Modelling\CircAdaptForWebsite\CircAdapt\Respiratory_Model\Test_Script.m',64,0)">line 64</a>)
+[tDummy,SVar] = ode113(@Respiratory_Modelfn,...
+} 
+Test_Script
+
+P = 
+
+  <a href="matlab:helpPopup struct" style="font-weight:bold">struct</a> with fields:
+
+    resp: [1×1 struct]
+
+
+P = 
+
+  <a href="matlab:helpPopup struct" style="font-weight:bold">struct</a> with fields:
+
+    resp: [1×1 struct]
+
+Simulation Done
+
+P = 
+
+  <a href="matlab:helpPopup struct" style="font-weight:bold">struct</a> with fields:
+
+    resp: [1×1 struct]
+
+{Error using <a href="matlab:matlab.internal.language.introspective.errorDocCallback('Respiratory_Modelfn')" style="font-weight:bold">Respiratory_Modelfn</a>
+Too many output arguments.
+
+Error in <a href="matlab:matlab.internal.language.introspective.errorDocCallback('odearguments', 'C:\Program Files\MATLAB\R2023b\toolbox\matlab\funfun\private\odearguments.m', 92)" style="font-weight:bold">odearguments</a> (<a href="matlab: opentoline('C:\Program Files\MATLAB\R2023b\toolbox\matlab\funfun\private\odearguments.m',92,0)">line 92</a>)
+f0 = ode(t0,y0,args{:});   % ODE15I sets args{1} to yp0.
+
+Error in <a href="matlab:matlab.internal.language.introspective.errorDocCallback('ode113', 'C:\Program Files\MATLAB\R2023b\toolbox\matlab\funfun\ode113.m', 113)" style="font-weight:bold">ode113</a> (<a href="matlab: opentoline('C:\Program Files\MATLAB\R2023b\toolbox\matlab\funfun\ode113.m',113,0)">line 113</a>)
+    odearguments(odeIsFuncHandle, odeTreatAsMFile, solver_name, ode, tspan, y0, options, varargin);
+
+Error in <a href="matlab:matlab.internal.language.introspective.errorDocCallback('Test_Script', 'C:\Users\Lasse\OneDrive\Skrivebord\Speciale\Physiological_Modelling\CircAdaptForWebsite\CircAdapt\Respiratory_Model\Test_Script.m', 64)" style="font-weight:bold">Test_Script</a> (<a href="matlab: opentoline('C:\Users\Lasse\OneDrive\Skrivebord\Speciale\Physiological_Modelling\CircAdaptForWebsite\CircAdapt\Respiratory_Model\Test_Script.m',64,0)">line 64</a>)
+[tDummy,SVar] = ode113(@Respiratory_Modelfn,...
+} 
+Test_Script
+
+P = 
+
+  <a href="matlab:helpPopup struct" style="font-weight:bold">struct</a> with fields:
+
+    resp: [1×1 struct]
+
+
+P = 
+
+  <a href="matlab:helpPopup struct" style="font-weight:bold">struct</a> with fields:
+
+    resp: [1×1 struct]
+
+Simulation Done
+
+P = 
+
+  <a href="matlab:helpPopup struct" style="font-weight:bold">struct</a> with fields:
+
+    resp: [1×1 struct]
+
+{Error using <a href="matlab:matlab.internal.language.introspective.errorDocCallback('Respiratory_Modelfn')" style="font-weight:bold">Respiratory_Modelfn</a>
+Too many output arguments.
+
+Error in <a href="matlab:matlab.internal.language.introspective.errorDocCallback('odearguments', 'C:\Program Files\MATLAB\R2023b\toolbox\matlab\funfun\private\odearguments.m', 92)" style="font-weight:bold">odearguments</a> (<a href="matlab: opentoline('C:\Program Files\MATLAB\R2023b\toolbox\matlab\funfun\private\odearguments.m',92,0)">line 92</a>)
+f0 = ode(t0,y0,args{:});   % ODE15I sets args{1} to yp0.
+
+Error in <a href="matlab:matlab.internal.language.introspective.errorDocCallback('ode113', 'C:\Program Files\MATLAB\R2023b\toolbox\matlab\funfun\ode113.m', 113)" style="font-weight:bold">ode113</a> (<a href="matlab: opentoline('C:\Program Files\MATLAB\R2023b\toolbox\matlab\funfun\ode113.m',113,0)">line 113</a>)
+    odearguments(odeIsFuncHandle, odeTreatAsMFile, solver_name, ode, tspan, y0, options, varargin);
+
+Error in <a href="matlab:matlab.internal.language.introspective.errorDocCallback('Test_Script', 'C:\Users\Lasse\OneDrive\Skrivebord\Speciale\Physiological_Modelling\CircAdaptForWebsite\CircAdapt\Respiratory_Model\Test_Script.m', 64)" style="font-weight:bold">Test_Script</a> (<a href="matlab: opentoline('C:\Users\Lasse\OneDrive\Skrivebord\Speciale\Physiological_Modelling\CircAdaptForWebsite\CircAdapt\Respiratory_Model\Test_Script.m',64,0)">line 64</a>)
+[tDummy,SVar] = ode113(@Respiratory_Modelfn,...
+} 
+
+P = 
+
+  <a href="matlab:helpPopup struct" style="font-weight:bold">struct</a> with fields:
+
+    resp: [1×1 struct]
+
+
+P = 
+
+  <a href="matlab:helpPopup struct" style="font-weight:bold">struct</a> with fields:
+
+    resp: [1×1 struct]
+
+Simulation Done
+Simulation Done
+
+P = 
+
+  <a href="matlab:helpPopup struct" style="font-weight:bold">struct</a> with fields:
+
+    resp: [1×1 struct]
+
+
+P = 
+
+  <a href="matlab:helpPopup struct" style="font-weight:bold">struct</a> with fields:
+
+    resp: [1×1 struct]
+
+Unrecognized field name "Tdeflate".
+
+Error in <a href="matlab:matlab.internal.language.introspective.errorDocCallback('Test_Script', 'C:\Users\Lasse\OneDrive\Skrivebord\Speciale\Physiological_Modelling\CircAdaptForWebsite\CircAdapt\Respiratory_Model\Test_Script.m', 19)" style="font-weight:bold">Test_Script</a> (<a href="matlab: opentoline('C:\Users\Lasse\OneDrive\Skrivebord\Speciale\Physiological_Modelling\CircAdaptForWebsite\CircAdapt\Respiratory_Model\Test_Script.m',19,0)">line 19</a>)
+P.resp.Tdeflate; %Expiratory Time Contant
+
+
+P = 
+
+  <a href="matlab:helpPopup struct" style="font-weight:bold">struct</a> with fields:
+
+    resp: [1×1 struct]
+
+
+P = 
+
+  <a href="matlab:helpPopup struct" style="font-weight:bold">struct</a> with fields:
+
+    resp: [1×1 struct]
+
+Unrecognized function or variable 'tDeflate'.
+
+Error in <a href="matlab:matlab.internal.language.introspective.errorDocCallback('Driver_Function', 'C:\Users\Lasse\OneDrive\Skrivebord\Speciale\Physiological_Modelling\CircAdaptForWebsite\CircAdapt\Respiratory_Model\Driver_Function.m', 24)" style="font-weight:bold">Driver_Function</a> (<a href="matlab: opentoline('C:\Users\Lasse\OneDrive\Skrivebord\Speciale\Physiological_Modelling\CircAdaptForWebsite\CircAdapt\Respiratory_Model\Driver_Function.m',24,0)">line 24</a>)
+    Pao = PS - (PS*(t/tDeflate))+PEEP;
+
+Error in <a href="matlab:matlab.internal.language.introspective.errorDocCallback('Respiratory_Modelfn', 'C:\Users\Lasse\OneDrive\Skrivebord\Speciale\Physiological_Modelling\CircAdaptForWebsite\CircAdapt\Respiratory_Model\Respiratory_Modelfn.m', 20)" style="font-weight:bold">Respiratory_Modelfn</a> (<a href="matlab: opentoline('C:\Users\Lasse\OneDrive\Skrivebord\Speciale\Physiological_Modelling\CircAdaptForWebsite\CircAdapt\Respiratory_Model\Respiratory_Modelfn.m',20,0)">line 20</a>)
+    Pao = Driver_Function(t(i));
+
+Error in <a href="matlab:matlab.internal.language.introspective.errorDocCallback('Test_Script', 'C:\Users\Lasse\OneDrive\Skrivebord\Speciale\Physiological_Modelling\CircAdaptForWebsite\CircAdapt\Respiratory_Model\Test_Script.m', 44)" style="font-weight:bold">Test_Script</a> (<a href="matlab: opentoline('C:\Users\Lasse\OneDrive\Skrivebord\Speciale\Physiological_Modelling\CircAdaptForWebsite\CircAdapt\Respiratory_Model\Test_Script.m',44,0)">line 44</a>)
+Respiratory_Modelfn(P.resp.Ppl0,0,P.resp.sim_lgth);
+
+Simulation Done
+Simulation Done
+Simulation Done
+Simulation Done
+Simulation Done
+Unrecognized function or variable 'tDeflate'.
+
+Error in <a href="matlab:matlab.internal.language.introspective.errorDocCallback('Driver_Function', 'C:\Users\Lasse\OneDrive\Skrivebord\Speciale\Physiological_Modelling\CircAdaptForWebsite\CircAdapt\Respiratory_Model\Driver_Function.m', 24)" style="font-weight:bold">Driver_Function</a> (<a href="matlab: opentoline('C:\Users\Lasse\OneDrive\Skrivebord\Speciale\Physiological_Modelling\CircAdaptForWebsite\CircAdapt\Respiratory_Model\Driver_Function.m',24,0)">line 24</a>)
+    Pao = PS - (PS*(t/tDeflate))+PEEP;
+
+Error in <a href="matlab:matlab.internal.language.introspective.errorDocCallback('Respiratory_Modelfn', 'C:\Users\Lasse\OneDrive\Skrivebord\Speciale\Physiological_Modelling\CircAdaptForWebsite\CircAdapt\Respiratory_Model\Respiratory_Modelfn.m', 20)" style="font-weight:bold">Respiratory_Modelfn</a> (<a href="matlab: opentoline('C:\Users\Lasse\OneDrive\Skrivebord\Speciale\Physiological_Modelling\CircAdaptForWebsite\CircAdapt\Respiratory_Model\Respiratory_Modelfn.m',20,0)">line 20</a>)
+    Pao = Driver_Function(t(i));
+
+Error in <a href="matlab:matlab.internal.language.introspective.errorDocCallback('Test_Script', 'C:\Users\Lasse\OneDrive\Skrivebord\Speciale\Physiological_Modelling\CircAdaptForWebsite\CircAdapt\Respiratory_Model\Test_Script.m', 44)" style="font-weight:bold">Test_Script</a> (<a href="matlab: opentoline('C:\Users\Lasse\OneDrive\Skrivebord\Speciale\Physiological_Modelling\CircAdaptForWebsite\CircAdapt\Respiratory_Model\Test_Script.m',44,0)">line 44</a>)
+Respiratory_Modelfn(P.resp.Ppl0,0,P.resp.sim_lgth);
+
+Unrecognized function or variable 'tDeflate'.
+
+Error in <a href="matlab:matlab.internal.language.introspective.errorDocCallback('Driver_Function', 'C:\Users\Lasse\OneDrive\Skrivebord\Speciale\Physiological_Modelling\CircAdaptForWebsite\CircAdapt\Respiratory_Model\Driver_Function.m', 24)" style="font-weight:bold">Driver_Function</a> (<a href="matlab: opentoline('C:\Users\Lasse\OneDrive\Skrivebord\Speciale\Physiological_Modelling\CircAdaptForWebsite\CircAdapt\Respiratory_Model\Driver_Function.m',24,0)">line 24</a>)
+    Pao = PS - (PS*(t/tDeflate))+PEEP;
+
+Error in <a href="matlab:matlab.internal.language.introspective.errorDocCallback('Respiratory_Modelfn', 'C:\Users\Lasse\OneDrive\Skrivebord\Speciale\Physiological_Modelling\CircAdaptForWebsite\CircAdapt\Respiratory_Model\Respiratory_Modelfn.m', 20)" style="font-weight:bold">Respiratory_Modelfn</a> (<a href="matlab: opentoline('C:\Users\Lasse\OneDrive\Skrivebord\Speciale\Physiological_Modelling\CircAdaptForWebsite\CircAdapt\Respiratory_Model\Respiratory_Modelfn.m',20,0)">line 20</a>)
+    Pao = Driver_Function(t(i));
+
+Error in <a href="matlab:matlab.internal.language.introspective.errorDocCallback('Test_Script', 'C:\Users\Lasse\OneDrive\Skrivebord\Speciale\Physiological_Modelling\CircAdaptForWebsite\CircAdapt\Respiratory_Model\Test_Script.m', 44)" style="font-weight:bold">Test_Script</a> (<a href="matlab: opentoline('C:\Users\Lasse\OneDrive\Skrivebord\Speciale\Physiological_Modelling\CircAdaptForWebsite\CircAdapt\Respiratory_Model\Test_Script.m',44,0)">line 44</a>)
+Respiratory_Modelfn(P.resp.Ppl0,0,P.resp.sim_lgth);
+
+Simulation Done
+Simulation Done
+Simulation Done
+Simulation Done
+Test_Script
+
+P = 
+
+  <a href="matlab:helpPopup struct" style="font-weight:bold">struct</a> with fields:
+
+    resp: [1×1 struct]
+
+
+P = 
+
+  <a href="matlab:helpPopup struct" style="font-weight:bold">struct</a> with fields:
+
+    resp: [1×1 struct]
+
+Simulation Done
+
+P = 
+
+  <a href="matlab:helpPopup struct" style="font-weight:bold">struct</a> with fields:
+
+    resp: [1×1 struct]
+
+{Error using <a href="matlab:matlab.internal.language.introspective.errorDocCallback('Respiratory_Modelfn')" style="font-weight:bold">Respiratory_Modelfn</a>
+Too many output arguments.
+
+Error in <a href="matlab:matlab.internal.language.introspective.errorDocCallback('odearguments', 'C:\Program Files\MATLAB\R2023b\toolbox\matlab\funfun\private\odearguments.m', 92)" style="font-weight:bold">odearguments</a> (<a href="matlab: opentoline('C:\Program Files\MATLAB\R2023b\toolbox\matlab\funfun\private\odearguments.m',92,0)">line 92</a>)
+f0 = ode(t0,y0,args{:});   % ODE15I sets args{1} to yp0.
+
+Error in <a href="matlab:matlab.internal.language.introspective.errorDocCallback('ode113', 'C:\Program Files\MATLAB\R2023b\toolbox\matlab\funfun\ode113.m', 113)" style="font-weight:bold">ode113</a> (<a href="matlab: opentoline('C:\Program Files\MATLAB\R2023b\toolbox\matlab\funfun\ode113.m',113,0)">line 113</a>)
+    odearguments(odeIsFuncHandle, odeTreatAsMFile, solver_name, ode, tspan, y0, options, varargin);
+
+Error in <a href="matlab:matlab.internal.language.introspective.errorDocCallback('Test_Script', 'C:\Users\Lasse\OneDrive\Skrivebord\Speciale\Physiological_Modelling\CircAdaptForWebsite\CircAdapt\Respiratory_Model\Test_Script.m', 65)" style="font-weight:bold">Test_Script</a> (<a href="matlab: opentoline('C:\Users\Lasse\OneDrive\Skrivebord\Speciale\Physiological_Modelling\CircAdaptForWebsite\CircAdapt\Respiratory_Model\Test_Script.m',65,0)">line 65</a>)
+[tDummy,SVar] = ode113(@Respiratory_Modelfn,...
+} 
+Simulation Done
+Simulation Done
+Simulation Done
+Simulation Done
+Undefined function 'Respiratory_Modelfn' for input arguments of type 'double'.
+
+Error in <a href="matlab:matlab.internal.language.introspective.errorDocCallback('Test_Script', 'C:\Users\Lasse\OneDrive\Skrivebord\Speciale\Physiological_Modelling\CircAdaptForWebsite\CircAdapt\Respiratory_Model\Test_Script.m', 44)" style="font-weight:bold">Test_Script</a> (<a href="matlab: opentoline('C:\Users\Lasse\OneDrive\Skrivebord\Speciale\Physiological_Modelling\CircAdaptForWebsite\CircAdapt\Respiratory_Model\Test_Script.m',44,0)">line 44</a>)
+Respiratory_Modelfn(P.resp.Ppl0,0,P.resp.sim_lgth);
+
+Simulation Done
+Simulation Done
+Simulation Done
+Simulation Done
+Simulation Done
+Simulation Done
+Simulation Done
+Simulation Done
+Simulation Done
+Simulation Done
+Simulation Done
