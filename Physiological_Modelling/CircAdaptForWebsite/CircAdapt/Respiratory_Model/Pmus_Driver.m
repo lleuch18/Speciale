@@ -9,8 +9,9 @@ PEEP = P.resp.PEEP;
 Trise = P.resp.Trise;
 Tdeflate = P.resp.Tdeflate;
 PmusTi = P.resp.PmusTi;
-PmusTe = P.resp.PmusTe;
+PmusTe = P.resp.PmusExpLgth;
 PmusPause = P.resp.PmusPause;
+PmusExpLgth = P.resp.PmusExpLgth;
 Tstart = 0;
 PmusSet = P.resp.PmusSet; 
 %A = Amplitude
@@ -23,13 +24,23 @@ PmusSet = P.resp.PmusSet;
 %Pit = A*sin(2*pi*f*t)+Offset;
 
 if PSTrigger
-    Pmus = 0; %%%KEEP EYE ON FUNNY INTERACTIONS WHEN PSTRIGGER IS HIT    
+    t=t-P.resp.TriggerTime;
+    
+    if t<=PmusTe
+    %{disp(['t in PmusDriver: ',num2str(t)])
+    Pmus =  -P.resp.PSTrigger*sin((pi*(t+PmusTe-2*PmusTi))/(2*(PmusTe-PmusTi))); %%%KEEP EYE ON FUNNY INTERACTIONS WHEN PSTRIGGER IS HIT
+    Pmus = Pmus+(PmusSet*sin((pi/(2*PmusTi))*P.resp.TriggerTime)+P.resp.PSTrigger*sin((pi*((P.resp.TriggerTime+0.02)+PmusTe-2*PmusTi))/(2*(PmusTe-PmusTi))));
+    
+    else
+        Pmus=0;
+    end
 else
     if t >= Tstart && t <= PmusTi %Monotonically increase during inspiration
         Pmus = PmusSet*sin((pi/(2*PmusTi))*t);
+        %disp(['Pmus ', num2str(Pmus), 'At t', num2str(t)])
     elseif t > PmusTi && t <= PmusTi+PmusTe  %Monotonically decrease during expiration
         t = t-PmusTi; 
-        Pmus = PmusSet*sin((pi*(t+PmusTe-2*PmusTi))/2*(PmusTe-PmusTi));
+        Pmus = -PmusSet*sin((pi*(t+PmusTe-2*PmusTi))/(2*(PmusTe-PmusTi)));
     elseif t > PmusTe-PmusTi && t <= PmusTe-PmusTi+PmusPause % 0 During pause between insp and exp
         Pmus = 0;
     end

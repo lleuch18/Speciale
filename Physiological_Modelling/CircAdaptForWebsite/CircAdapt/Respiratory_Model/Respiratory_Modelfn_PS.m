@@ -5,14 +5,16 @@ function Respiratory_Modelfn(Ppl0,start_time,end_time)
 
 global P
 %% Plots
-[Pao_plot,Ppl_plot,flow_plot,V_plot,Pvent_plot,Pmus_plot] = plots(1,1,1,1,1,1);
+[Pao_plot,Ppl_plot,flow_plot,V_plot,Pvent_plot,Pmus_plot] = plots(1,1,1,1,0,1);
+
+
 
 %% Loop Parameters
 t = [start_time:P.resp.dt:end_time]; 
 
 
 %% Initial Values
-Ppl = 0+P.resp.PEEP; %Techically Ppl = -3 at start insp, but we assume the driving pressure creating flow, to be equal to PEEP 
+Ppl = 0; %Techically Ppl = -3 at start insp, but we assume the driving pressure creating flow, to be equal to PEEP 
 Pao = P.resp.PEEP; %Initial Pao is PEEP [cmH2O]
 V = (P.resp.Crs*P.resp.PEEP)*10^-3; %Initiel Volumen [L]
 flow = 0;
@@ -26,21 +28,29 @@ for i = 1:length(t)
     % PSTrigger controls delivery of Pvent and Pmus activation
     if Pmus <= P.resp.PSTrigger && PSTrigger == false
         PSTrigger = true;
-        disp('PMUS TRIGGER SET')
+        P.resp.TriggerTime = t(i);        
+        disp(['PMUS TRIGGER SET AT TIME',num2str(P.resp.TriggerTime)])
     end
     
     %% Pmus Activation    
     % Pmus adds dP caused by patient breathing effort
     Pmus = Pmus_Driver(t(i),PSTrigger);
 
+    
     if i > 1 
-    dPmus = Pmus-P.resp.Pmus(i-1);
-    if Pmus < 0
-        disp(['dpmus:', num2str(dPmus)]);
-        disp(['Pmus:', num2str(Pmus)]);
-        disp(['Pmus(i-1)',num2str(P.resp.Pmus(i-1))]);
+    dPmus = Pmus-P.resp.Pmus(i-1);     
+     %  if Pmus > -1.5
+       %{  disp(['t:', num2str(t(i))]);
+        %disp(['dpmus:', num2str(dPmus)]);
+        %disp(['Pmus:', num2str(Pmus)]);
+        %disp(['Pmus(i-1)',num2str(P.resp.Pmus(i-1))]); 
+    %end  
     end
-    end
+    
+    
+    
+    
+    
 
     
     %% Pvent Activation

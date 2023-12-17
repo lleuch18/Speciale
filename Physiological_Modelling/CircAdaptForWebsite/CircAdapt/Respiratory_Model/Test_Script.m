@@ -18,13 +18,14 @@ P.resp.TCT = 60/P.resp.RR; %Total Cycle Time in seconds
 P.resp.Ti = 1.5 %Inspiratory time seconds
 P.resp.Te = 2.5 %Inspiratory time seconds
 P.resp.Trise = P.resp.Ti*0.2; % 20percent of Ti
-P.resp.PSTrigger = -1.5; % Pmus pressuredrop before delivery of PS [cmH2O]
+P.resp.PSTrigger = -3; % Pmus pressuredrop before delivery of PS [cmH2O]
 
 %Pmus settings
 P.resp.PmusTi = 1.5; %Inspiratory time of Pmus [s]
 P.resp.PmusTe = 2.5; %Expiratory time of Pmus [s]
 P.resp.PmusPause = 0.2; %Pause between insp and exp phase [s]
 P.resp.PmusSet = -12; %Pmus target to reach [cmH2O]
+P.resp.PmusExpLgth = 0.60 %Length between end-inspiration and Pmus reaching 0
 
 %Simulation Parameters
 P.resp.dt = 0.002; %2ms time steps
@@ -49,7 +50,47 @@ close all;
 %Allocate Memory
 Memory_Allocation;
 
+sim_dur = P.resp.sim_lgth;
+P.resp.t_insp = [0:0.02:P.resp.sim_lgth];
+t_exp = [0:0.02:0.60]
+
+PmusTe = 0.60;%P.resp.PmusTe;
+PmusTi = P.resp.PmusTi;
+PmusSet = P.resp.PmusSet;
+
+P.resp.tempPmus = PmusSet*sin((pi/(2*PmusTi))*P.resp.t_insp);
+P.resp.tempPmusInsp = P.resp.tempPmus(end:-1:1);
+
 Respiratory_Modelfn_PS(P.resp.Ppl0,0,P.resp.sim_lgth);
+
+%% PMUS Curve
+clc; close all;
+sim_dur = P.resp.sim_lgth;
+t_insp = [0:0.02:P.resp.PmusTi];
+t_exp = [0:0.02:0.60]
+
+PmusTe = 0.60;%P.resp.PmusTe;
+PmusTi = P.resp.PmusTi;
+PmusSet = P.resp.PmusSet;
+
+%Pmus = zeros(length(t));
+
+
+
+
+
+
+Pmus_insp = PmusSet*sin((pi/(2*PmusTi))*t_insp)';
+
+Pmus_exp = Pmus_insp(end:-1:1);
+
+
+subplot(2,1,1)
+plot(Pmus_exp);
+title('Pmus_exp [0.60s]')
+subplot(2,1,2)
+plot(Pmus_insp)
+title('Pmus_insp [1.5s]')
 
 
 %% PRESSURE CONTROL One-Breath-Cycle time derivative 
