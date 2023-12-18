@@ -14,23 +14,28 @@ PmusPause = P.resp.PmusPause;
 PmusExpLgth = P.resp.PmusExpLgth;
 Tstart = 0;
 PmusSet = P.resp.PmusSet; 
-%A = Amplitude
-%f = Frequency [Hz]
-%Period = Length of 1 cycle [s]
-%t=time of simulation
 
-%f = 1/period;
 
-%Pit = A*sin(2*pi*f*t)+Offset;
 
-if PSTrigger
-    t=t-P.resp.TriggerTime;
+if isfield(P.resp, 'Pmus_Exp_PSTrigger') == 0
+    disp(['value of exist(): ', num2str(isfield(P.resp, 'Pmus_Exp_PSTrigger'))])
+    %Creates a pre-calculated version of Pmus at expiration, which is the
+    %inverse of inspiratory Pmus, with a frequency defined by PmusTe
+    %instead of PmusTi
+    P.resp.t_exp = [0:P.resp.dt:PmusTe]';   
+    P.resp.Pmus_Exp_PSTrigger = P.resp.PSTrigger*sin((pi/(2*PmusTe))*P.resp.t_exp); P.resp.Pmus_Exp_PSTrigger = P.resp.Pmus_Exp_PSTrigger(end:-1:1);
     
+end
+
+if PSTrigger    
+    %Subtract TriggerTime, in order to access Pmus_Exp at its origin
+    t = t-P.resp.TriggerTime
+
+    disp(['t_exp:',num2str(find(abs(P.resp.t_exp-t)<0.001))])
     if t<=PmusTe
-    %{disp(['t in PmusDriver: ',num2str(t)])
-    Pmus =  -P.resp.PSTrigger*sin((pi*(t+PmusTe-2*PmusTi))/(2*(PmusTe-PmusTi))); %%%KEEP EYE ON FUNNY INTERACTIONS WHEN PSTRIGGER IS HIT
-    Pmus = Pmus+(PmusSet*sin((pi/(2*PmusTi))*P.resp.TriggerTime)+P.resp.PSTrigger*sin((pi*((P.resp.TriggerTime+0.02)+PmusTe-2*PmusTi))/(2*(PmusTe-PmusTi))));
-    
+        %Acceses the pre-calculated Pmus at expiration, at index
+        %corresponding to current time
+    Pmus = P.resp.Pmus_Exp_PSTrigger(find(abs(P.resp.t_exp-t)<0.001))
     else
         Pmus=0;
     end

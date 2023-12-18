@@ -18,7 +18,7 @@ P.resp.TCT = 60/P.resp.RR; %Total Cycle Time in seconds
 P.resp.Ti = 1.5 %Inspiratory time seconds
 P.resp.Te = 2.5 %Inspiratory time seconds
 P.resp.Trise = P.resp.Ti*0.2; % 20percent of Ti
-P.resp.PSTrigger = -3; % Pmus pressuredrop before delivery of PS [cmH2O]
+P.resp.PSTrigger = -4; % Pmus pressuredrop before delivery of PS [cmH2O]
 
 %Pmus settings
 P.resp.PmusTi = 1.5; %Inspiratory time of Pmus [s]
@@ -31,6 +31,7 @@ P.resp.PmusExpLgth = 0.60 %Length between end-inspiration and Pmus reaching 0
 P.resp.dt = 0.002; %2ms time steps
 P.resp.sim_lgth = 4; %Simulation length in seconds
 P.resp.Tdeflate = 0.4; %Expiratory Time Contant in seconds
+P.resp.cnt = 0; %Count for circumventing errors with indexing in Pmus_Vent
 
 
 %Initial Values
@@ -52,7 +53,9 @@ Memory_Allocation;
 
 sim_dur = P.resp.sim_lgth;
 P.resp.t_insp = [0:0.02:P.resp.sim_lgth];
-t_exp = [0:0.02:0.60]
+
+
+
 
 PmusTe = 0.60;%P.resp.PmusTe;
 PmusTi = P.resp.PmusTi;
@@ -66,30 +69,50 @@ Respiratory_Modelfn_PS(P.resp.Ppl0,0,P.resp.sim_lgth);
 %% PMUS Curve
 clc; close all;
 sim_dur = P.resp.sim_lgth;
-t_insp = [0:0.02:P.resp.PmusTi];
-t_exp = [0:0.02:0.60]
 
-PmusTe = 0.60;%P.resp.PmusTe;
+PmusTe = 0.6;%P.resp.PmusTe;
 PmusTi = P.resp.PmusTi;
 PmusSet = P.resp.PmusSet;
+
+%% Original Te
+t_insp = [0:P.resp.dt:PmusTi];
+t_exp = [0:P.resp.dt:PmusTe];
+
+%% Full Period
+t_insp = [0:P.resp.dt:4];
+t_exp = [0:P.resp.dt:4]
 
 %Pmus = zeros(length(t));
 
 
 
+%%
+clc;
+close all;
+
+%Pmus_insp = PmusSet*sin((pi/(2*PmusTi))*t_insp)'; %Original Pmus_Insp profile
+
+Pmus_insp = P.resp.PSTrigger*sin((pi/(2*PmusTi))*t_insp)'; %Pmus_Insp with PSTrigger as origin
 
 
+Pmus_exp = P.resp.PSTrigger*sin((pi/(2*PmusTe))*t_exp)'; Pmus_exp = Pmus_exp(end:-1:1); %Pmus_sxp as reverse of Pmus_insp
 
-Pmus_insp = PmusSet*sin((pi/(2*PmusTi))*t_insp)';
+%Pmus_exp = P.resp.PSTrigger*sin((pi*(t_exp+PmusTe-2*PmusTi))/(2*(PmusTe-PmusTi))) %Pmusxp profile with start at PSTrigger
 
-Pmus_exp = Pmus_insp(end:-1:1);
+%Pmus_exp = PmusSet*sin((pi*(t_exp+PmusTe-2*PmusTi))/(2*(PmusTe-PmusTi))) %Original Pmusxp profile
 
 
 subplot(2,1,1)
 plot(Pmus_exp);
 title('Pmus_exp [0.60s]')
+yline(0)
+xline(find(t_insp==PmusTe))
+%yline(P.resp.PSTrigger)
 subplot(2,1,2)
 plot(Pmus_insp)
+yline(0)
+%yline(P.resp.PSTrigger)
+xline(find(t_insp==PmusTi))
 title('Pmus_insp [1.5s]')
 
 

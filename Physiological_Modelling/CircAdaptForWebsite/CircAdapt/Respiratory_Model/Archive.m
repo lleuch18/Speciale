@@ -9,8 +9,11 @@
 
 
 
-
-
+%% Earlier Versions of PmusDriver
+%{disp(['t in PmusDriver: ',num2str(t)])
+    %Pmus =  -P.resp.PSTrigger*sin((pi*(t+PmusTe-2*PmusTi))/(2*(PmusTe-PmusTi))); %%%KEEP EYE ON FUNNY INTERACTIONS WHEN PSTRIGGER IS HIT
+    %Pmus = Pmus+(PmusSet*sin((pi/(2*PmusTi))*P.resp.TriggerTime)+P.resp.PSTrigger*sin((pi*((P.resp.TriggerTime+0.02)+PmusTe-2*PmusTi))/(2*(PmusTe-PmusTi))));
+    
 
 %% Original Driver Function
 %if state == 'insp'
