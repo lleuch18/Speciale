@@ -15,9 +15,9 @@ Te = P.resp.Te;
 
 if PSTrigger
     if t >= 0 && t <= 0.01 %Baseline for 0.01S
-        Pvent = 0 + PEEP;
+        Pvent = 0;
     elseif t > 0.01 && t <= Trise %Smoothly rise over Trise
-        Pvent = PS*(t/Trise)+PEEP;
+        Pvent = PS*(t/Trise);
     elseif t > Trise && t <= Ti %Remain constant during insp
         Pvent = PS+PEEP;
     elseif t > Ti && t <= Ti+Tdeflate; %Smoothly deflate
@@ -27,5 +27,5 @@ if PSTrigger
         Pvent = PEEP;
     end
 else
-    Pvent = 0 + PEEP;
+    Pvent = 0;
 end

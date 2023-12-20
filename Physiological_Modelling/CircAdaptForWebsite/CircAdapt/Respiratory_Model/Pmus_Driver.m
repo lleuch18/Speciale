@@ -1,4 +1,4 @@
-function Pmus = Pmus_Driver(t,PSTrigger)
+function Pmus = Pmus_Driver(t,Pmus_Cycle)
 %PMUS_DRIVER Outputs Pmus at current time, given that conditions of
 %spontaneous breathing are met, and PS trigger hasn't been reached
 
@@ -15,27 +15,30 @@ PmusExpLgth = P.resp.PmusExpLgth;
 Tstart = 0;
 PmusSet = P.resp.PmusSet; 
 
+%disp(num2str(t));
 
-
-if isfield(P.resp, 'Pmus_Exp_PSTrigger') == 0
+if isfield(P.resp, 'Pmus_Exp_PSTrigger') == 0 && Pmus_Cycle == true
     disp(['value of exist(): ', num2str(isfield(P.resp, 'Pmus_Exp_PSTrigger'))])
     %Creates a pre-calculated version of Pmus at expiration, which is the
     %inverse of inspiratory Pmus, with a frequency defined by PmusTe
     %instead of PmusTi
     P.resp.t_exp = [0:P.resp.dt:PmusTe]';   
-    P.resp.Pmus_Exp_PSTrigger = P.resp.PSTrigger*sin((pi/(2*PmusTe))*P.resp.t_exp); P.resp.Pmus_Exp_PSTrigger = P.resp.Pmus_Exp_PSTrigger(end:-1:1);
+    P.resp.Pmus_Exp_PSTrigger = P.resp.Pmus_At_CV*sin((pi/(2*PmusTe))*P.resp.t_exp); P.resp.Pmus_Exp_PSTrigger = P.resp.Pmus_Exp_PSTrigger(end:-1:1);
     
 end
 
-if PSTrigger    
+if Pmus_Cycle    
     %Subtract TriggerTime, in order to access Pmus_Exp at its origin
-    t = t-P.resp.TriggerTime
-
-    disp(['t_exp:',num2str(find(abs(P.resp.t_exp-t)<0.001))])
+    t = t-P.resp.PmusCycleTime;
+   
+    
     if t<=PmusTe
+        if t < 0.006
+            t
+        end
         %Acceses the pre-calculated Pmus at expiration, at index
         %corresponding to current time
-    Pmus = P.resp.Pmus_Exp_PSTrigger(find(abs(P.resp.t_exp-t)<0.001))
+    Pmus = P.resp.Pmus_Exp_PSTrigger(find(abs(P.resp.t_exp-t)<0.001));
     else
         Pmus=0;
     end

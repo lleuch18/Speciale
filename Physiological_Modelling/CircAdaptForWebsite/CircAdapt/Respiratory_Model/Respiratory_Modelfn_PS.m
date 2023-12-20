@@ -5,7 +5,7 @@ function Respiratory_Modelfn(Ppl0,start_time,end_time)
 
 global P
 %% Plots
-[Pao_plot,Ppl_plot,flow_plot,V_plot,Pvent_plot,Pmus_plot] = plots(1,1,1,1,0,1);
+[Pao_plot,Ppl_plot,flow_plot,V_plot,Pvent_plot,Pmus_plot] = plots(1,1,1,1,1,1);
 
 
 
@@ -21,7 +21,8 @@ flow = 0;
 Pmus = 0;
 dPmus = 0;
 
-PSTrigger = false;
+PSTrigger = false; %Triggers when PS is activated
+Pmus_Cycle = false; %Triggers when Pmus cycles to expiration
 %% System of Equations
 for i = 1:length(t)     
     %% PSTrigger state
@@ -32,9 +33,11 @@ for i = 1:length(t)
         disp(['PMUS TRIGGER SET AT TIME',num2str(P.resp.TriggerTime)])
     end
     
+   
+    
     %% Pmus Activation    
     % Pmus adds dP caused by patient breathing effort
-    Pmus = Pmus_Driver(t(i),PSTrigger);
+    Pmus = Pmus_Driver(t(i),Pmus_Cycle);
 
     
     if i > 1 
@@ -71,6 +74,18 @@ for i = 1:length(t)
     %Seperate Ppl section for a cleaner code
     dPpl = dPmus + dPao;
     Ppl = Ppl+dPpl; % Calculate Ppl
+    
+    
+     %% PMusCycle state
+     %Cycle must be checked after flow has been calculated
+    if flow >= P.resp.PMusCycle && Pmus_Cycle == false && i>2 
+        Pmus_Cycle = true; %Sets cycle to true, begins Pmus monotonic decrease towards 0
+        P.resp.PmusCycleTime = t(i); %Records the time at which cycle variable is reached
+        disp(['PMUS CYCLE TIME AT: ', num2str(P.resp.PmusCycleTime)])
+        
+        P.resp.Pmus_At_CV = Pmus;
+        disp(num2str(Pmus));
+    end
     
     %% Housekeeping
     Housekeep(i,flow,V,Pvent,Pmus,Ppl,Pao);    

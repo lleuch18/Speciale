@@ -15,10 +15,10 @@ P.resp.PS = 20; %Leveret Tryk
 P.resp.PEEP = 5;
 P.resp.RR = 12; %Respiratory rate in bpm
 P.resp.TCT = 60/P.resp.RR; %Total Cycle Time in seconds
-P.resp.Ti = 1.5 %Inspiratory time seconds
+P.resp.Ti = 1.5 %Inspiratory time seconds   
 P.resp.Te = 2.5 %Inspiratory time seconds
 P.resp.Trise = P.resp.Ti*0.2; % 20percent of Ti
-P.resp.PSTrigger = -4; % Pmus pressuredrop before delivery of PS [cmH2O]
+P.resp.PSTrigger = -1.5; % Pmus pressuredrop before delivery of PS [cmH2O]
 
 %Pmus settings
 P.resp.PmusTi = 1.5; %Inspiratory time of Pmus [s]
@@ -26,6 +26,7 @@ P.resp.PmusTe = 2.5; %Expiratory time of Pmus [s]
 P.resp.PmusPause = 0.2; %Pause between insp and exp phase [s]
 P.resp.PmusSet = -12; %Pmus target to reach [cmH2O]
 P.resp.PmusExpLgth = 0.60 %Length between end-inspiration and Pmus reaching 0
+P.resp.PMusCycle = 2; %The flow in [L/S] at which Pmus cycles to passive expiration
 
 %Simulation Parameters
 P.resp.dt = 0.002; %2ms time steps
