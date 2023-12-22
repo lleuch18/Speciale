@@ -7,6 +7,8 @@ global P
 %% Plots
 [Pao_plot,Ppl_plot,flow_plot,V_plot,Pvent_plot,Pmus_plot] = plots(1,1,1,1,1,1);
 
+plot = false %Switch on/off for all plots
+
 
 
 %% Loop Parameters
@@ -78,7 +80,7 @@ for i = 1:length(t)
     
      %% PMusCycle state
      %Cycle must be checked after flow has been calculated
-    if flow >= P.resp.PMusCycle && Pmus_Cycle == false && i>2 
+    if flow >= P.resp.PmusCycle && Pmus_Cycle == false && i>2 
         Pmus_Cycle = true; %Sets cycle to true, begins Pmus monotonic decrease towards 0
         P.resp.PmusCycleTime = t(i); %Records the time at which cycle variable is reached
         disp(['PMUS CYCLE TIME AT: ', num2str(P.resp.PmusCycleTime)])
@@ -94,54 +96,57 @@ end
 
 disp('Simulation Done')
 
-if Pvent_plot
-figure(1)
-plot(t,P.resp.Pao)
-title('Pao')
-ylabel('Pao (cmH2O)')
-xlabel('Time (S)')
-end
-
-if Ppl_plot
-figure(2)
-plot(t,P.resp.Ppl)
-title('Ppl')
-ylabel('Ppl (cmH2O)')
-xlabel('Time (S)')
-end
-
-if flow_plot
-figure(3)
-plot(t,P.resp.flow);%*60 for debugging purpose
-title('flow')
-ylabel('flow (L/min)')
-xlabel('Time (S)')
-end
-
-if V_plot
-figure(4)
-plot(t,P.resp.V)
-title('V')
-ylabel('V (L)')
-xlabel('Time (S)')
-%yticks([0,0.5,1,1.5,2,2.5,3,3.5,4])
-%yline((P.resp.CL*P.resp.PEEP)*10^-3)
-end
-
-if Pvent_plot
-figure(5)
-plot(t,P.resp.Pvent)
-title('Pvent')
-ylabel('P (cmH2O)')
-xlabel('Time (S)')
-end
-
-if Pmus_plot
-figure(6)
-plot(t,P.resp.Pmus)
-title('Pmus')
-ylabel('P (cmH2O)')
-xlabel('Time (S)')
+if plot
+    
+    if Pvent_plot
+    figure(1)
+    plot(t,P.resp.Pao)
+    title('Pao')
+    ylabel('Pao (cmH2O)')
+    xlabel('Time (S)')
+    end
+    
+    if Ppl_plot
+    figure(2)
+    plot(t,P.resp.Ppl)
+    title('Ppl')
+    ylabel('Ppl (cmH2O)')
+    xlabel('Time (S)')
+    end
+    
+    if flow_plot
+    figure(3)
+    plot(t,P.resp.flow);%*60 for debugging purpose
+    title('flow')
+    ylabel('flow (L/min)')
+    xlabel('Time (S)')
+    end
+    
+    if V_plot
+    figure(4)
+    plot(t,P.resp.V)
+    title('V')
+    ylabel('V (L)')
+    xlabel('Time (S)')
+    %yticks([0,0.5,1,1.5,2,2.5,3,3.5,4])
+    %yline((P.resp.CL*P.resp.PEEP)*10^-3)
+    end
+    
+    if Pvent_plot
+    figure(5)
+    plot(t,P.resp.Pvent)
+    title('Pvent')
+    ylabel('P (cmH2O)')
+    xlabel('Time (S)')
+    end
+    
+    if Pmus_plot
+    figure(6)
+    plot(t,P.resp.Pmus)
+    title('Pmus')
+    ylabel('P (cmH2O)')
+    xlabel('Time (S)')
+    end
 end
 
 
