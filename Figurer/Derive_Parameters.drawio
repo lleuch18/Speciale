@@ -1,10 +1,10 @@
-<mxfile host="app.diagrams.net" modified="2024-01-10T07:54:49.940Z" agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36" etag="bV8n6yvI9QcTaWnGxrb1" version="22.1.18" type="github">
+<mxfile host="app.diagrams.net" modified="2024-01-10T09:19:30.042Z" agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36" etag="QHQSswqDOSLoXwDKTftX" version="22.1.18" type="github">
   <diagram name="Page-1" id="dxkUu_h541sHtngTb_Nf">
     <mxGraphModel dx="1434" dy="738" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
       <root>
         <mxCell id="0" />
         <mxCell id="1" parent="0" />
-        <mxCell id="FZ5DHeCZTq1QPbefAQ_P-1" value="&lt;b&gt;Derive Patient &amp;amp; Model Parameters&lt;/b&gt;" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontSize=20;labelBackgroundColor=none;fontColor=#393C56;" vertex="1" parent="1">
+        <mxCell id="FZ5DHeCZTq1QPbefAQ_P-1" value="&lt;b&gt;Derive Parameters and Inputs&lt;/b&gt;" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontSize=20;labelBackgroundColor=none;fontColor=#393C56;" vertex="1" parent="1">
           <mxGeometry x="304" y="80" width="220" height="30" as="geometry" />
         </mxCell>
         <mxCell id="FZ5DHeCZTq1QPbefAQ_P-2" value="Estimate R&lt;sub&gt;aw&lt;/sub&gt;" style="rounded=0;whiteSpace=wrap;html=1;labelBackgroundColor=none;fillColor=#F2CC8F;strokeColor=#E07A5F;fontColor=#393C56;" vertex="1" parent="1">
@@ -39,6 +39,21 @@
         </mxCell>
         <mxCell id="FZ5DHeCZTq1QPbefAQ_P-12" value="P&lt;sub&gt;mus &lt;/sub&gt;= &lt;br&gt;(V&lt;sub&gt;t&lt;/sub&gt;-V(max(P&lt;sub&gt;ao&lt;/sub&gt;)))/C&lt;sub&gt;rs&lt;/sub&gt;" style="rounded=0;whiteSpace=wrap;html=1;strokeColor=#B9E0A5;fontColor=#393C56;fillColor=#B9E0A5;" vertex="1" parent="1">
           <mxGeometry x="442" y="660" width="120" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="FZ5DHeCZTq1QPbefAQ_P-14" value="Extract inspiratory- and expiratory time" style="rounded=0;whiteSpace=wrap;html=1;labelBackgroundColor=none;fillColor=#F2CC8F;strokeColor=#E07A5F;fontColor=#393C56;" vertex="1" parent="1">
+          <mxGeometry x="354" y="760" width="120" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="FZ5DHeCZTq1QPbefAQ_P-15" value="For each breath" style="rounded=0;whiteSpace=wrap;html=1;strokeColor=#97D077;fontColor=#393C56;fillColor=#B9E0A5;" vertex="1" parent="1">
+          <mxGeometry x="195" y="860" width="120" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="FZ5DHeCZTq1QPbefAQ_P-16" value="Inspiratory time = positive flow duration" style="rounded=0;whiteSpace=wrap;html=1;strokeColor=#B9E0A5;fontColor=#393C56;fillColor=#B9E0A5;" vertex="1" parent="1">
+          <mxGeometry x="353" y="860" width="120" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="FZ5DHeCZTq1QPbefAQ_P-17" value="Expiratory time = negative flow duration" style="rounded=0;whiteSpace=wrap;html=1;strokeColor=#B9E0A5;fontColor=#393C56;fillColor=#B9E0A5;" vertex="1" parent="1">
+          <mxGeometry x="513" y="860" width="120" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="FZ5DHeCZTq1QPbefAQ_P-18" value="Extract inspiratory- and expiratory time" style="rounded=0;whiteSpace=wrap;html=1;labelBackgroundColor=none;fillColor=#F2CC8F;strokeColor=#E07A5F;fontColor=#393C56;" vertex="1" parent="1">
+          <mxGeometry x="353" y="960" width="120" height="60" as="geometry" />
         </mxCell>
       </root>
     </mxGraphModel>
